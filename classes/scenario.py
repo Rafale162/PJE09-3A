@@ -30,7 +30,7 @@ class Scenario:
                     if hand.GetSide() == side:
                         if app.gestureModel.GetSign(hand) == sign:
                             loop = False
-                sleep(.5)
+                sleep(.2)
         except EndLoop:
             pass
             
