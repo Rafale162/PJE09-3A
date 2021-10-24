@@ -1,36 +1,52 @@
-from time import sleep
+import time
+from classes.gesturemodel import GestureModel
 
 class Scenario:
+    def Run(self, mainPipe, capturePipe):
+        self.mainPipe = mainPipe
+        self.capturePipe = capturePipe
 
-    def Run(self, app, shared):
-        hands = shared.hands
+        received = capturePipe.recv()
+        self.gestureModel = GestureModel()
+        self.gestureModel.SetImageSize(received)
 
-        print("Ouvrez la main gauche")
-        self.WaitFor(app, shared, "Left", "Open")
-        print("OK")
+        self.PrintOnScreen("Ouvrez la main gauche")
+        self.WaitFor("Left", "Open")
+        self.PrintOnScreen("OK")
 
-        print("Fermez la main gauche")
-        self.WaitFor(app, shared, "Left", "Close")
-        print("OK")
+        self.Wait(2)
 
-        print("Pouce droit en l'air")
-        self.WaitFor(app, shared, "Right", "ThumbUp")
-        print("OK")
+        self.PrintOnScreen("Fermez la main gauche")
+        self.WaitFor("Left", "Close")
+        self.PrintOnScreen("OK")
 
-        app.Stop()
+        self.Wait(2)
 
-    def WaitFor(self, app, shared, side, sign):
-        class EndLoop(Exception): pass
-        loop = True
-        try:
-            while loop:
-                if app.exit:
-                    raise EndLoop
-                for hand in shared.hands:
+        self.PrintOnScreen("Pouce droit en l'air")
+        self.WaitFor("Right", "ThumbUp")
+        self.PrintOnScreen("OK")
+
+        mainPipe.send("exit")
+        capturePipe.recv()
+
+    def Wait(self, timeout):
+        start = time.time()
+        while time.time() < start + timeout:
+            if self.capturePipe.poll(0):
+                self.capturePipe.recv()
+
+    def WaitFor(self, side, sign):
+        keep = True
+        while keep:
+            received = self.capturePipe.recv()
+            if received == "exit":
+                break
+            if received is not None and received != []:
+                for hand in received:
                     if hand.GetSide() == side:
-                        if app.gestureModel.GetSign(hand) == sign:
-                            loop = False
-                sleep(.2)
-        except EndLoop:
-            pass
+                        if self.gestureModel.GetSign(hand) == sign:
+                            keep = False
+    
+    def PrintOnScreen(self, msg):
+        self.capturePipe.send([msg])
             

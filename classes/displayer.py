@@ -110,3 +110,7 @@ class Displayer:
             cv.putText(self.image, "MODE:" + modeString[mode - 1], (10, 90), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1, cv.LINE_AA)
             if 0 <= number <= 9:
                 cv.putText(self.image, "NUM:" + str(number), (10, 110), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1, cv.LINE_AA)
+
+    def WriteText(self, text):
+        cv.putText(self.image, text, (10, 140), cv.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 4, cv.LINE_AA)
+        cv.putText(self.image, text, (10, 140), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2, cv.LINE_AA)
