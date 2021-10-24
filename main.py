@@ -1,10 +1,10 @@
 import cv2
 import sys
-from utils import CvFpsCalc
 from threading import Thread
 from classes.camera import Camera
-from classes.gesturemodel import GestureModel
+from classes.cvfpscalc import CvFpsCalc
 from classes.displayer import Displayer
+from classes.gesturemodel import GestureModel
 from classes.scenario import Scenario
 
 class Main:
@@ -14,8 +14,8 @@ class Main:
         self.exit = False
         self.mode = 0
         self.camera = Camera(0)
-        self.gestureModel = GestureModel()
         self.displayer = Displayer()
+        self.gestureModel = GestureModel()
         self.gestureModel.SetImageSize(self.camera.GetResolution())
         self.scenario = Scenario()
 
@@ -27,7 +27,7 @@ class Main:
 
         self.captureThread = Thread(target = self.Capture, args = (self.shared,))
         self.scenarioThread = Thread(target = self.scenario.Run, args = (self, self.shared,))
-        
+
         self.captureThread.start()
         self.scenarioThread.start()
 
