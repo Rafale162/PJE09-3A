@@ -1,4 +1,3 @@
-import copy
 import cv2
 from classes.camera import Camera
 from classes.cvfpscalc import CvFpsCalc

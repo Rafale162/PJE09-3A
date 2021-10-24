@@ -1,6 +1,3 @@
-import copy
-import cv2
-import sys
 from multiprocessing import Process, Pipe
 from classes.capture import Capture
 from classes.scenario import Scenario
