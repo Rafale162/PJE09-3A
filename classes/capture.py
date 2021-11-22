@@ -17,7 +17,7 @@ class Capture:
         self.gestureModel.SetImageSize(self.camera.GetResolution())
         self.cvFpsCalc = CvFpsCalc(buffer_len=10)
         self.scenarioPipe.send(self.camera.GetResolution())
-        text = ""
+        text = []
         
         while self.camera.IsOpen():
             if self.mainPipe.poll(0):

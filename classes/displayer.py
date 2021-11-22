@@ -35,7 +35,8 @@ class Displayer:
         return [x, y, x + w, y + h]
 
     def DrawLandmarks(self, hand):
-        lmp = hand.GetLandmarkList(self.image)
+        imageWidth, imageHeight = self.image.shape[1], self.image.shape[0]
+        lmp = hand.GetLandmarkList(imageWidth, imageHeight)
         if len(lmp) > 0:
             # Thumb
             self.DrawLandmarkLine(lmp, 2, 3)
@@ -112,5 +113,8 @@ class Displayer:
                 cv.putText(self.image, "NUM:" + str(number), (10, 110), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1, cv.LINE_AA)
 
     def WriteText(self, text):
-        cv.putText(self.image, text, (10, 140), cv.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 4, cv.LINE_AA)
-        cv.putText(self.image, text, (10, 140), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2, cv.LINE_AA)
+        i = 140
+        for line in text:
+            cv.putText(self.image, str(line), (10, i), cv.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 4, cv.LINE_AA)
+            cv.putText(self.image, str(line), (10, i), cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2, cv.LINE_AA)
+            i += 30

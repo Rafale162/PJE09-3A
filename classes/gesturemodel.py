@@ -48,6 +48,10 @@ class GestureModel:
         handSignId = self.keyPointClassifier(preProcessedLandmarkList)
         return self.signLabels[handSignId]
 
+    def GetPoint(self, hand, id):
+        landmark = hand.GetLandmarkList(self.width, self.height)
+        return landmark[id]
+
     def GetPreProcessedLandmark(self, hand):
         landmarkPoint = []
         # Keypoint
